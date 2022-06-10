@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- 
+        pom.xml 파일: 메이븐을 이용하여 필요한 라이브러리를 다운받을 수 있는 파일
+
+        pom.xml 파일의 구조
+        -현재 내가 작업중인 프로젝트의 구조   
+        groupId: 2번 째 레벨까지의 패키지 구조
+        artifactId: 3번째 레벨의 패키지명(즉, 프로그램명==context root)
+        name: 프로젝트명
+        packaging: 배포할 때 압축될 형식 war (jar는 그냥 프로그램, web이라서 war)
+    -->
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kh</groupId>
 	<artifactId>spring</artifactId>
 	<name>Spring_Project</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
+
+    <!-- 
+        -properties: 이 문서에서 사용할 환경설정 내용들을 담은 변수(즉, 태그명이 곧 변수명이 되는것)
+                    ${변수명}으로 해당 값을 불러올 수 있다.
+
+                    셋팅해야하는 변수 내용
+                    java-version 1.6 (JDK 6버전)=>1.8 (JDK 8버전)
+                    org.springframework-version 3.1.1.RELEASE => 최신버전 5.3.20
+    -->
 	<properties>
-		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+		<java-version>11</java-version>
+		<org.springframework-version>5.3.20</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
+
+    <!-- 
+        -dependencies:프로젝트에서 사용할 라이브러리들의 정보를 담는 곳
+                        (즉, 내가 다운로드받고자하는 라이브러리들을 적으면 jar 파일들이 다운로드 된다.)
+                        =>"의존성 라이브러리", "의존성 주입"
+    -->
 	<dependencies>
 		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
-			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j -->
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				 </exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>    
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
 				
 		<!-- AspectJ -->
 		<dependency>
@@ -58,30 +79,13 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-			</exclusions>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
 
 		<!-- @Inject -->
 		<dependency>
@@ -115,8 +119,55 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency>    
+        <!-- 
+            추가적으로 필요한 라이브러리 셋팅
+            https://mvnrepository.com/ 에서 구문 가져오기
+        -->
+        <!--1. DB관련 라이브러리들-->
+        <!--1_1. ojdbc6.jar -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc6 -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.4</version>
+        </dependency>    
+        <!--1_2. 스프링에서 JDBC기능을 사용하기 위한 라이브러리-->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        <!--1_3. 순수 MyBatis 라이브러리-->
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.10</version>
+        </dependency>
+        <!--1_4. 스프링에서 MyBatis를 이용하기 위한 라이브러리 -->
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+        <!--1_5. 커넥션 풀 -->
+        <!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
 	</dependencies>
+
+    <!-- 
+        build:플러그인들을 정의하는 부분
+                딱히 건들일은 없음
+    --> 
     <build>
         <plugins>
             <plugin>
@@ -152,6 +203,10 @@
                 <configuration>
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
             </plugin>
         </plugins>
     </build>

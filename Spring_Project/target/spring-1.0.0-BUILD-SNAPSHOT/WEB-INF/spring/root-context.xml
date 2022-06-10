@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 
+        root-context.xml: 서버 구동과 동시에 web.xml 파일을 거쳐서 바로 로딩되는 문서
+                            서버 구동과 동시에 바로 셋팅해야 하는 내용들을 기술
+                            예)DB설정, 트랜잭션 처리 설정, 내외부 모듈 연결 설정
+        
+        root-context.xml 파일 설정 방법
+        beans 태그로 감싸져 있음=>bean 하나하나씩 등록시켜주면 됨
+        bean: "도구" (자바 객체) =>그동안은 우리가 new 구문으로 일일이 객체 생성을 했지만 
+                                    이제는 스프링이 알아서 객체를 생성해주고 관리함
+                                    어느 타입의(자바 클래스 타입) 어느 이름의 객체를 앞으로 사용할건지 등록
+                                    
+    -->
+</beans>
