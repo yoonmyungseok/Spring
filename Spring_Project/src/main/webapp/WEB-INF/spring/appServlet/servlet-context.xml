@@ -63,6 +63,8 @@
     <!-- 
         com.kh.spring 내부에 있는 모든 클래스들을 감시하여 
         어떤 어노테이션이 붙어있는지 빈으로 등록할건지 체크하겠다 라는 설정
+
+        annotation-driven 태그와 같이 씀
     -->
 	<context:component-scan base-package="com.kh.spring" />
 	

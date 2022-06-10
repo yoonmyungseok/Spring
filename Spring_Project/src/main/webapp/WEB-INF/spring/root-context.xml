@@ -24,16 +24,40 @@
         <property name="username" value="SPRING"/>
         <property name="password" value="SPRING"/>
     </bean>
-    
+    <!-- 
+        객체가 필요할 때마다 내부적으로 이 코드가 실행됨
+        BasicDataSource dataSource=new BasicDataSource();
+        dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+        dataSource.setUserName("SPRING");
+        dataSource.setPassword("SPRING");
+    -->
+
     <!-- 2단계. MyBatis Spring에서 제공하는 SQL 명령어를 실행할 수 있게 도와주는 도구 등록-->
     <!-- SqlSessionFactoryBean->SqlSessionTemplate -->
     <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
         <property name="configLocation" value="classpath:mybatis-config.xml"/> <!-- classpath: 는 resources를 의미-->
-        <property name="dataSource" ref="dataSource" /> <!-- ref는객체타입을 매개변수로 넘겨줄때 사용-->
+        <property name="dataSource" ref="dataSource" /> <!-- ref는 객체타입을 매개변수로 넘겨줄때 사용-->
     </bean>
+    <!-- 
+        객체가 필요할 때마다 내부적으로 이 코드가 실행됨
+        SqlSessionFactoryBean sqlSessionFactory=new SqlSessionFactoryBean();
+        sqlSessionFactory.setConfigLocation("classpath:mybatis-config.xml");
+        sqlSEssionFactory.setDataSource(dataSource);
+    -->
+    
 
     <!-- 3단계. SQL 구문 실행을 위한 템플릿을 제공하는 도구 등록-->
     <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
         <constructor-arg ref="sqlSessionFactory"/>
     </bean>
+    <!-- 
+        객체가 필요할 때마다 내부적으로 이 코드가 실행됨
+        SqlSessionTemplate sqlSession=new SqlSessionTemplate(sqlSessionFactory);
+    -->
+    <!-- 
+        property: setter 주입
+        constructor-arg: 생성자 주입
+    -->
+
 </beans>
