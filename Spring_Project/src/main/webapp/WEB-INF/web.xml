@@ -17,15 +17,18 @@
     -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>
+            /WEB-INF/spring/root-context.xml
+            /WEB-INF/spring/spring-security.xml
+        </param-value>
 	</context-param>
     <context-param>
-	<param-name>log4jConfiguration</param-name>
-    <param-value>classpath:/log4j2.xml</param-value>
-</context-param>
-<listener>
-	<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
-</listener>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>classpath:/log4j2.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+    </listener>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
     <!-- 
@@ -65,4 +68,32 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+    <!-- 
+        *필터
+        모든 요청 처리 전 공통적으로 필요로 하는 기능들을
+        클라이언트의 요청을 Controller가 받기전에 가로채서 선처리 해주는 개념
+        =>"요청"을 받기 전에 미리 가로 채야하기 때문에 애초에 서버구동과 동시에 읽혀지는 web.xml에 등록함
+
+        *스프링에서 제공하는 인코딩 필터를 등록
+        -클래스명: org.springframework.web.filter.CharacterEncodingFilter
+    -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--인코딩 방식을 지정 -->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <!-- 옵션: 혹시나 인코딩할 때 충돌이 난 경우 강제로 UTF-8로 인코딩 될 수 있도록-->
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <!--위에서 지정한 encodingFilter를 모든 요청 패턴에 적용-->
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
