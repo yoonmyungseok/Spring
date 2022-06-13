@@ -59,6 +59,11 @@
         internalResourceViewResolver.setPrefix("/WEB-INF/views/");
         internalResourceViewResolver.setSuffix(".jsp");
     -->
+    <!-- 
+        위의 방식이 xml로 bean을 등록하는 방식
+        =>장점:xml 문서 안에서 한눈에 어떤 bean이 등록되었는지 확인가능
+        =>단점 : 여러 개발자가 같은  xml 파일을 수정하게 되면 충돌이 발생할 수 있다.
+    -->
 
     <!-- 
         com.kh.spring 내부에 있는 모든 클래스들을 감시하여 
@@ -67,7 +72,12 @@
         annotation-driven 태그와 같이 씀
     -->
 	<context:component-scan base-package="com.kh.spring" />
-	
-	
+	<!-- 
+		위의 방식이 어노테이션으로 bean을 등록하는 방식
+		
+		어노테이션 방식
+		component-scan에서 지정한 패키지명 하위의 모든 클래스들을 스캔하여 
+		@Controller와 같은 MVC 어노테이션이 붙은 클래스를 자동으로 bean으로 등록해주는 방식
+	-->
 	
 </beans:beans>
