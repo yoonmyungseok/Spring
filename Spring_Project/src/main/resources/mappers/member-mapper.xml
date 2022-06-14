@@ -17,7 +17,12 @@
     </resultMap>
 
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
-        SELECT * FROM MEMBER WHERE USER_ID=#{userId} AND USER_PWD=#{userPwd} AND STATUS='Y'
+        <!--
+            암호화 작업 전 
+            SELECT * FROM MEMBER WHERE USER_ID=#{userId} AND USER_PWD=#{userPwd} AND STATUS='Y'
+        -->
+        <!--암호화 작업 후: 오로지 아이디만으로 조회-->
+        SELECT * FROM MEMBER WHERE USER_ID=#{userId} AND STATUS='Y'
     </select>
 
     <insert id="insertMember" parameterType="">

@@ -213,34 +213,60 @@ public class MemberController {
      */
     @RequestMapping(value = "login.me")
     public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
+        // 비밀번호 암호화 후
+        // m의 userPwd 필드: 평문 비밀번호 값
+        // loginUser의 userPwd 필드: 암호화된 비밀번호 값
+
         Member loginUser = memberService.loginMember(m);
+        // 아이디만 일치하는지 1차 체크
 
-        if (loginUser == null) {
-            // 실패=>에러문구를 requestScope에 담아서 에러페이지로 포워딩
+        // 비밀번호도 일치하는지 2차 체크
+        // BCryptPasswordEncoder 클래스에서 제공하는 matches 메소드
+        // matches(평문, 암호문)을 작성하면 내부적으로 대조 작업이 이루어져 두 구문이 일치하는지 비교
+        // 일치한다면 true/일치하지 않으면 false
 
-            // 1번 방식
-            // model.addAttribute("errorMsg","로그인 실패");
-
-            // ModelAndView 객체 사용할 경우
-            mv.addObject("errorMsg", "로그인 실패");
-
-            // 1번방식
-            // return "common/errorPage";
-
-            // ModelAndView 객체 사용할 경우
-            mv.setViewName("common/errorPage");
-
-        } else {
-            // 성공=>sessionScope에 회원정보를 담고 메인페이지로 url 재요청
+        // 일단 조회된 회원결과가 있는지 그리고 평문비밀번호와 암호문 비밀번호가 일치하는지
+        if (loginUser != null && bCryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
+            // 로그인 성공
             session.setAttribute("loginUser", loginUser);
+            session.setAttribute("alertMsg", "로그인에 성공했습니다");
 
-            // 1번 방식
-            // return "redirect:/";
-
-            // ModelAndView 객체를사용할 경우
-            mv.setViewName("redirect:/"); // 메인페이지로 url 재요청
-
+            mv.setViewName("redirect:/");
+        } else {
+            // 로그인 실패=>에러페이지로 포워딩
+            mv.addObject("errorMsg", "로그인 실패");
+            mv.setViewName("common/errorPage");
         }
+
+        // 비밀번호 암호화 전
+        /*
+         * if (loginUser == null) {
+         * // 실패=>에러문구를 requestScope에 담아서 에러페이지로 포워딩
+         * 
+         * // 1번 방식
+         * // model.addAttribute("errorMsg","로그인 실패");
+         * 
+         * // ModelAndView 객체 사용할 경우
+         * mv.addObject("errorMsg", "로그인 실패");
+         * 
+         * // 1번방식
+         * // return "common/errorPage";
+         * 
+         * // ModelAndView 객체 사용할 경우
+         * mv.setViewName("common/errorPage");
+         * 
+         * } else {
+         * // 성공=>sessionScope에 회원정보를 담고 메인페이지로 url 재요청
+         * session.setAttribute("loginUser", loginUser);
+         * 
+         * // 1번 방식
+         * // return "redirect:/";
+         * 
+         * // ModelAndView 객체를사용할 경우
+         * mv.setViewName("redirect:/"); // 메인페이지로 url 재요청
+         * 
+         * }
+         */
         return mv;
     }
 
