@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
+    <resultMap id="boardResulSet" type="board">
+        <result column="BOARD_NO" property="boardNo"/>  
+        <result column="BOARD_TITLE" property="boardTitle"/>
+        <result column="BOARD_WRITER" property="boardWriter"/>
+        <result column="COUNT" property="count"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="ORIGIN_NAME" property="originName"/>
+    </resultMap>
 
+    <select id="selectListCount" resultType="_int">
+        SELECT COUNT(*) FROM BOARD WHERE STATUS='Y'
+    </select>
+
+    <select id="selectList" resultMap="boardResulSet">
+        SELECT BOARD_NO ,BOARD_TITLE , BOARD_WRITER , COUNT , TO_CHAR(CREATE_DATE, 'YYYY_MM-DD') "CREATE_DATE", ORIGIN_NAME 
+        FROM BOARD
+        WHERE STATUS ='Y'
+        ORDER BY CREATE_DATE DESC 
+    </select>
 </mapper>

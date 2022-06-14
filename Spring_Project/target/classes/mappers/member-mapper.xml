@@ -25,8 +25,20 @@
         SELECT * FROM MEMBER WHERE USER_ID=#{userId} AND STATUS='Y'
     </select>
 
-    <insert id="insertMember" parameterType="">
+    <insert id="insertMember" parameterType="member">
         INSERT INTO MEMBER(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS) 
-        ALUES(${userId},${userPwd},#{userName},#{email},#{gender},#{age},#{phone},#{address})
+        VALUES(#{userId},#{userPwd},#{userName},#{email},#{gender},#{age},#{phone},#{address})
     </insert>
+
+    <update id="updateMember" parameterType="member">
+        UPDATE MEMBER
+        SET USER_NAME=#{userName}, EMAIL=#{email}, AGE=#{age}, PHONE=#{phone}, ADDRESS=#{address}, GENDER=#{gender}, MODIFY_DATE=SYSDATE
+        WHERE USER_ID=#{userId}
+    </update>
+
+    <update id="deleteMember" parameterType="string">
+        UPDATE MEMBER
+        SET STATUS='N' , MODIFY_DATE=SYSDATE
+        WHERE USER_ID=#{userId}
+    </update>
 </mapper>

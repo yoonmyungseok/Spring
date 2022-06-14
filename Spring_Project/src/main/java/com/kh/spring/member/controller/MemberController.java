@@ -211,7 +211,7 @@ public class MemberController {
      * model에 key-value 세트로 데이터를 담을 경우: mv.addObject("키", 밸류);
      * view에 응답 뷰의 정보를 담을 경우: mv.setViewName("포워딩할 jsp파일경로 또는 redirect:요청할url");
      */
-    @RequestMapping(value = "login.me")
+    @RequestMapping("login.me")
     public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
         // 비밀번호 암호화 후
         // m의 userPwd 필드: 평문 비밀번호 값
@@ -334,5 +334,76 @@ public class MemberController {
             model.addAttribute("errorMsg", "회원가입 실패");
             return "common/errorPage";
         }
+    }
+
+    @RequestMapping("myPage.me")
+    public String myPage() {
+        // 단순히 마이페이지 화면을 띄워주는 요청
+        return "member/myPage";
+    }
+
+    @RequestMapping("update.me")
+    public String updateMember(Member m, Model model, HttpSession session) {
+        int result = memberService.updateMember(m);
+
+        if (result > 0) {
+            // 성공
+            // DB로 부터 회원정보를 수정된 버전으로 다시 조회해서
+            // session에 loginUser라는 키값으로 밸류를 덮어씌워줘야 함(로그인 상태가 계속 유지되게 끔)
+            // 기존의 loginMember 메소드를 재활용
+            Member updateMem = memberService.loginMember(m);
+            session.setAttribute("loginUser", updateMem);
+            session.setAttribute("alertMsg", "성공적으로 회원 정보가 수정되었습니다.");
+
+            // 마이페이지 url 재요청
+            return "redirect:myPage.me";
+
+        } else {
+            // 실패=>에러 문구를 담아서 에러페이지 포워딩
+            model.addAttribute("errorMsg", "회원정보 변경 실패");
+            return "common/errorPage";
+        }
+    }
+
+    @RequestMapping("delete.me")
+    public String deleteMember(String userPwd, String userId, HttpSession session, Model model) {
+        // 탈퇴 처리에 대한 로직
+
+        // 누구를 탈퇴시킬 것인가? =>현재 로그인한 사용자의 아이디값
+
+        // 1.<input type="hidden">로 넘겨오기
+        // 2.Controller 단에서 session으로 알아내기
+
+        // userPwd: 사용자가 입력한 본인의 비밀번호 평문
+        // session 객체의 loginUser 객체의 userPwd 필드값: 암호화된 비밀번호
+        // =>matches 메소드로 대조 작업
+        String encPwd = ((Member) session.getAttribute("loginUser")).getUserPwd();
+        if (bCryptPasswordEncoder.matches(userPwd, encPwd)) {
+            // 비밀번호가 맞을 경우=>탈퇴 처리
+            int result = memberService.deleteMember(userId);
+
+            if (result > 0) {
+                // 탈퇴 성공=>session 에서 loginUser 제거, alert 문구 담기
+                // invalidate 메소드 쓰는 경우=>이미 세션이 무효화되었기 때문에 추가적인 값을 담을 수 없음
+                // session.invalidate();
+
+                // removeAttribute("키")
+                session.removeAttribute("loginUser");
+                session.setAttribute("alertMsg", "성공적으로 탈퇴 되었습니다. 그동안 이용해주셔서 감사합니다.");
+
+                // url 재요청 메인페이지로
+                return "redirect:/";
+            } else {
+                // 탈퇴 실패=>에러문구 담아서 에러페이지로 포워딩
+                model.addAttribute("errorMsg", "회원 탈퇴 실패");
+                return "common/errorPage";
+            }
+        } else {
+            // 비밀번호가 맞지 않을 경우=>메세지+마이페이지로 url 재요청
+            session.setAttribute("alertMsg", "비밀번호를 잘못 입력했습니다");
+
+            return "redirect:myPage.me";
+        }
+
     }
 }
