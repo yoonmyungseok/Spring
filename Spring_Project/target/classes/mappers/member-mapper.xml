@@ -19,4 +19,9 @@
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
         SELECT * FROM MEMBER WHERE USER_ID=#{userId} AND USER_PWD=#{userPwd} AND STATUS='Y'
     </select>
+
+    <insert id="insertMember" parameterType="">
+        INSERT INTO MEMBER(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS) 
+        ALUES(${userId},${userPwd},#{userName},#{email},#{gender},#{age},#{phone},#{address})
+    </insert>
 </mapper>

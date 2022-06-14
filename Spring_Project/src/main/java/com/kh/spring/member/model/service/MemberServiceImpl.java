@@ -38,7 +38,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int insertMember(Member m) {
-        return 0;
+        // int result = memberDao.insertMember(sqlSession, m);
+
+        // SqlSessionTemplate 객체가 자동으로 커밋해줌
+        // return result;
+        return memberDao.insertMember(sqlSession, m);
+
     }
 
     @Override

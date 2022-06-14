@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -262,8 +263,8 @@ public class MemberController {
     }
 
     @RequestMapping("insert.me")
-    public void insertMember(Member m) {
-        System.out.println(m);
+    public String insertMember(Member m, Model model, HttpSession session) {
+        // System.out.println(m);
         // 1.한글 깨지는 이슈
         // 한글이 깨지는 이슈 발생=>post 방식일 경우 인코딩 설정을 먼저 해야함
         // 인코딩 필터를 적용하러 web.xml(배포서술자)에 스프링에서 제공하는 인코딩 필터를 등록
@@ -284,5 +285,28 @@ public class MemberController {
         // =>bean 등록
         // =>web.xml에 spring-security.xml 파일 읽히도록 설정
         // 3)@Autowired를 이용해서 언제든지 bcryptPasswordEncoder 객체 사용가능
+
+        // "평문" --> "암호문"
+        // System.out.println("평문: " + m.getUserPwd());
+
+        // 암호화 작업(암호문을 만들어 내는 과정)=>bcryptPasswordEncoder.encode() 메소드
+        String encPwd = bCryptPasswordEncoder.encode(m.getUserPwd());
+        // System.out.println("암호문: " + encPwd);
+
+        // m=>userPwd 필드값을 encPwd 으로 바꿔치기 후 insert 요청
+        m.setUserPwd(encPwd);
+
+        int result = memberService.insertMember(m);
+
+        if (result > 0) {
+            // 성공=>메인페이지 url 재요청
+            // 1회성 알람 메시지 실어보내기
+            session.setAttribute("alertMsg", "성공적으로 회원가입이 되었습니다");
+            return "redirect:/";
+        } else {
+            // 실패=>에러문구를 담아서 에러페이지로 포워딩
+            model.addAttribute("errorMsg", "회원가입 실패");
+            return "common/errorPage";
+        }
     }
 }

@@ -61,6 +61,15 @@
     </style>
 </head>
 <body>
+<!--1회성 알람문구 기능-->
+<c:if test="${not empty alertMsg}"> <!--알람메시지 내용이 있다면-->
+    <script>
+        //script 태그 안에서는 스크립틀릿이 인식되었음
+        //script 태그 안에서는 core 라이브러리 태그가 인식되지 않음=>사용 불가
+        alert("${alertMsg}");
+    </script>
+    <c:remove var="alertMsg" scope="session"/>
+</c:if>
 <div id="header">
         <div id="header_1">
             <div id="header_1_left">
