@@ -35,10 +35,4 @@
         SET USER_NAME=#{userName}, EMAIL=#{email}, AGE=#{age}, PHONE=#{phone}, ADDRESS=#{address}, GENDER=#{gender}, MODIFY_DATE=SYSDATE
         WHERE USER_ID=#{userId}
     </update>
-
-    <update id="deleteMember" parameterType="string">
-        UPDATE MEMBER
-        SET STATUS='N' , MODIFY_DATE=SYSDATE
-        WHERE USER_ID=#{userId}
-    </update>
 </mapper>
