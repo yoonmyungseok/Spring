@@ -35,4 +35,13 @@
         SET USER_NAME=#{userName}, EMAIL=#{email}, AGE=#{age}, PHONE=#{phone}, ADDRESS=#{address}, GENDER=#{gender}, MODIFY_DATE=SYSDATE
         WHERE USER_ID=#{userId}
     </update>
+    
+    <update id="deleteMember" parameterType="string">
+		UPDATE MEMBER SET STATUS = 'N' , MODIFY_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
+	</update>
+
+    <select id="idCheck" parameterType="string" resultType="_int">
+        SELECT COUNT(*) FROM MEMBER WHERE USER_ID=#{checkId}
+    </select>
 </mapper>

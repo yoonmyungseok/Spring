@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.spring.member.model.service.MemberService;
@@ -404,6 +405,25 @@ public class MemberController {
 
             return "redirect:myPage.me";
         }
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "idCheck.me", produces = "text/html; charset=utf-8")
+    public String idCheck(String checkId) {
+        //System.out.println(checkId);
+
+        int count = memberService.idCheck(checkId);
+
+        //count에 1이 담겨있을 경우 =>이미 사용중인 아이디가 있음(사용불가)
+        /*
+        if (count > 0) {
+            //이미 존재하는 아이디=>"NNNNN"
+            return "NNNNN";
+        } else {
+            //사용 가능한 아이디=>"NNNNY"
+            return "NNNNY";
+        }
+        */
+        return (count > 0) ? "NNNNN" : "NNNNY"; //삼항연산자 이용
     }
 }

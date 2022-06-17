@@ -64,12 +64,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ArrayList<Reply> selectReplyList(int boardNo) {
-        return null;
+        return boardDao.selectReplyList(sqlSession, boardNo);
     }
 
     @Override
     public int insertReply(Reply r) {
-        return 0;
+        return boardDao.insertReply(sqlSession, r);
     }
 
 }

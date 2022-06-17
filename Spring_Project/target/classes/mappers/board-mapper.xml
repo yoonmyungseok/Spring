@@ -14,6 +14,12 @@
 		<result column="BOARD_CONTENT" property="boardContent" />
 		<result column="CHANGE_NAME" property="changeName" />
 	</resultMap>
+    <resultMap id="replyResultSet" type="reply">
+        <result column="REPLY_NO" property="replyNo"/>
+        <result column="REPLY_WRITER" property="replyWriter" />
+        <result column="REPLY_CONTENT" property="replyContent" />
+        <result column="CREATE_DATE" property="createDate" />
+    </resultMap>
 
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -72,14 +78,17 @@
   		     , CHANGE_NAME = #{changeName}
   		 WHERE BOARD_NO = #{boardNo}
   	</update>
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
+
+    <select id="selectReplyList" parameterType="_int" resultMap="replyResultSet">
+        SELECT REPLY_NO, REPLY_WRITER, REPLY_CONTENT, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') "CREATE_DATE"
+        FROM REPLY
+        WHERE REF_BNO=#{boardNo} AND STATUS='Y'
+        ORDER BY REPLY_NO DESC
+    </select>
+
+    <insert id="insertReply" parameterType="reply">
+        INSERT INTO REPLY(REPLY_NO, REPLY_CONTENT, REF_BNO, REPLY_WRITER) 
+        VALUES (SEQ_RNO.NEXTVAL, #{replyContent}, #{refBoardNo}, #{replyWriter}) 
+    </insert>
+
 </mapper>

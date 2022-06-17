@@ -9,7 +9,14 @@
 </head>
 <body>
     <jsp:include page="common/header.jsp"/>
-    <div style="height:600px;">
+    <div class="content">
+        <br><br>
+        <div class="innerOuter">
+            <h4>게시글 TOP 5</h4>
+            <table>
+                
+            </table>
+        </div>
     </div>
     <jsp:include page="common/footer.jsp"/>
 </body>

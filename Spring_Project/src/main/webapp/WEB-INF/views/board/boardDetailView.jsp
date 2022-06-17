@@ -89,38 +89,91 @@
             <table id="replyArea" class="table" align="center">
                 <thead>
                     <tr>
-                        <th colspan="2">
-                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
-                        </th>
-                        <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th>
+                        <c:choose>
+                            <c:when test="${empty loginUser}">
+                                <th colspan="2">
+                                    <textarea class="form-control" id="content" cols="55" rows="2" style="resize:none; width:100%;" readonly>로그인한 사용자만 이용 가능한 서비스입니다. 로그인 후 이용 바랍니다.</textarea>
+                                </th>
+                                <th style="vertical-align:middle"><button class="btn btn-secondary" disabled>등록하기</button></th>
+                            </c:when>
+                            <c:otherwise>
+                                <th colspan="2">
+                                    <textarea class="form-control" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+                                </th>
+                                <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th>
+                            </c:otherwise>
+                        </c:choose>
+                        
                     </tr>
                     <tr>
-                        <td colspan="3">댓글(<span id="rcount">3</span>)</td>
+                        <td colspan="3">댓글(<span id="rcount"></span>)</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>user02</th>
-                        <td>ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ꿀잼</td>
-                        <td>2020-03-12</td>
-                    </tr>
-                    <tr>
-                        <th>user01</th>
-                        <td>재밌어요</td>
-                        <td>2020-03-11</td>
-                    </tr>
-                    <tr>
-                        <th>admin</th>
-                        <td>댓글입니다!!</td>
-                        <td>2020-03-10</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
         <br><br>
 
     </div>
-    
+    <script>
+        $(function(){
+            selectReplyList();
+        })
+        function addReply(){
+            //댓글 작성
+            
+            //댓글 내용이 있는지 먼저 조건검사 후에 요청
+            //=>required 속성은 form 태그 내부에서만 유효하기 때문
+            if($("#content").val().trim().length!=0){
+                //입력한 내용물 기준으로 공백 제거 후에도 문자열의 길이가 0이 아니라면=>유효한 내용물이 있다고 간주
+                $.ajax({
+                    url:"rinsert.bo",
+                    data:{
+                        refBoardNo: '${ b.boardNo}',
+                        replyContent: $("#content").val(),
+                        replyWriter: "${loginUser.userId}"
+                    },
+                    success:function(result){
+                        if(result=="success"){
+                            selectReplyList();
+                            $("#content").val("");
+                        }else{
+                            alertify.alert("댓글 작성 실패","댓글 등록에 실패했습니다.");
+                        }
+                    },
+                    error:function(){
+                        console.log("댓글 작성용 ajax 통신 실패!");
+                    }
+                });
+            }else{
+                alertify.alert("댓글 작성 실패", "댓글 작성 후 등록 요청해주세요.");
+            }
+        }
+        function selectReplyList(){
+            //해당 게시글에 딸린 댓글리스트 조회
+            $.ajax({
+                url:"rlist.bo",
+                data:{bno: '${ b.boardNo }'},
+                success:function(result){
+                    let resultStr="";
+                    for (const r of result) {
+                        resultStr +=   "<tr>"+
+                                            "<th>"+ r.replyWriter +"</th>"+
+                                            "<td>"+ r.replyContent +"</td>"+
+                                            "<td>"+ r.createDate +"</td>"+
+                                        "</tr>";
+                    }
+                    $("#replyArea tbody").html(resultStr);
+                    $("#rcount").text(result.length);
+                },
+                error:function(){
+                    console.log("댓글리스트 조회용 ajax 통신 실패")
+                }
+            })
+        }
+    </script>
     <jsp:include page="../common/footer.jsp" />
     
 </body>
