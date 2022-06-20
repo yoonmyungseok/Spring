@@ -75,7 +75,7 @@
     <script>
         //script 태그 안에서는 스크립틀릿이 인식되었음
         //script 태그 안에서는 core 라이브러리 태그가 인식되지 않음=>사용 불가
-        alertify.alert("서비스 성공","${alertMsg}");
+        alertify.alert("알람","${alertMsg}");
     </script>
     <c:remove var="alertMsg" scope="session"/>
 </c:if>

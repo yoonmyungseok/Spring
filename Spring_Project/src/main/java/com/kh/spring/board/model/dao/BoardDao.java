@@ -54,11 +54,15 @@ public class BoardDao {
     }
 
     public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int boardNo) {
-        return (ArrayList)sqlSession.selectList("boardMapper.selectReplyList", boardNo);
+        return (ArrayList) sqlSession.selectList("boardMapper.selectReplyList", boardNo);
     }
 
-	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
-		return sqlSession.insert("boardMapper.insertReply", r);
-	}
+    public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+        return sqlSession.insert("boardMapper.insertReply", r);
+    }
+
+    public ArrayList<Board> selectTopBoardList(SqlSessionTemplate sqlSession) {
+        return (ArrayList) sqlSession.selectList("boardMapper.selectTopBoardList");
+    }
 
 }

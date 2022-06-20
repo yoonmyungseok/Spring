@@ -80,4 +80,13 @@
 		@Controller와 같은 MVC 어노테이션이 붙은 클래스를 자동으로 bean으로 등록해주는 방식
 	-->
 	
+    <!--인터셉터 등록: DispatcherServlet 이후에 존재하는 개념이기 때문에 servlet-context.xml 파일에 등록해야 함-->
+    <interceptors>
+        <interceptor>
+            <mapping path="/enrollForm.bo" />
+            <mapping path="/update.me" />
+            <mapping path="/myPage.me" />
+            <beans:bean class="com.kh.spring.common.interceptor.LoginInterceptor" id="loginInterceptor" />
+        </interceptor>
+    </interceptors>
 </beans:beans>

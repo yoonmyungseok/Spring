@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -301,10 +300,19 @@ public class BoardController {
     @ResponseBody
     @RequestMapping(value = "rinsert.bo", produces = "text/html; charset=utf-8")
     public String ajaxInsertReply(Reply r) {
-        //Ajax 또한 커맨드객체 방식으로 요청 시 전달값을 받을 수 있다.
+        // Ajax 또한 커맨드객체 방식으로 요청 시 전달값을 받을 수 있다.
         int result = boardService.insertReply(r);
         return (result > 0) ? "success" : "fail";
     }
+
+    @ResponseBody
+    @RequestMapping(value = "topList.bo", produces = "application/json; charset=utf-8")
+    public String ajaxTopBoardList() {
+        ArrayList<Board> list = boardService.selectTopBoardList();
+        return new Gson().toJson(list);
+    }
+
+    /* 밑에는 일반 메소드임 */
 
     // * 스프링에서 반드시 요청을 처리하는 메소드만 Controller 에 들어가라는 법은 없다!!
     // 현재 넘어온 첨부파일의 이름을 수정 후 서버의 그 폴더에 저장하는 메소드

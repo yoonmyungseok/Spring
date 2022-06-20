@@ -37,4 +37,7 @@ public interface BoardService {
     // 댓글 작성 서비스
     int insertReply(Reply r);
 
+    // 조회수 top5 리스트 조회용 서비스
+    ArrayList<Board> selectTopBoardList();
+
 }
