@@ -1,0 +1,12 @@
+<log4j:event logger="com.kh.spring.LoggingTest" timestamp="1655780412362" level="INFO" thread="main">
+<log4j:message><![CDATA[난 info야]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.kh.spring.LoggingTest" timestamp="1655780412363" level="WARN" thread="main">
+<log4j:message><![CDATA[난 warn이야]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.kh.spring.LoggingTest" timestamp="1655780412363" level="ERROR" thread="main">
+<log4j:message><![CDATA[난 error야]]></log4j:message>
+</log4j:event>
+

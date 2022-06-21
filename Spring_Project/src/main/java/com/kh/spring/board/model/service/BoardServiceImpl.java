@@ -74,7 +74,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ArrayList<Board> selectTopBoardList() {
-        // TODO Auto-generated method stub
         return boardDao.selectTopBoardList(sqlSession);
     }
 

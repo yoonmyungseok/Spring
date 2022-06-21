@@ -1,5 +1,7 @@
 package com.kh.spring.member.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,7 +215,19 @@ public class MemberController {
      * view에 응답 뷰의 정보를 담을 경우: mv.setViewName("포워딩할 jsp파일경로 또는 redirect:요청할url");
      */
     @RequestMapping("login.me")
-    public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
+    public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session, String saveId,HttpServletResponse response) {
+        //saveId 값이 "y" 라면=>아이디를 저장하겠다.=>쿠키 생성
+        if (saveId != null && saveId.equals("y")) {
+            Cookie cookie = new Cookie("saveId", m.getUserId());
+            cookie.setMaxAge(1 * 24 * 60 * 60);//초로 환산해서 만료시간 1일
+            response.addCookie(cookie);
+        } else {
+            Cookie cookie = new Cookie("saveId", m.getUserId());
+            cookie.setMaxAge(0);//삭제한 효과
+            response.addCookie(cookie);
+        }
+        
+
         // 비밀번호 암호화 후
         // m의 userPwd 필드: 평문 비밀번호 값
         // loginUser의 userPwd 필드: 암호화된 비밀번호 값

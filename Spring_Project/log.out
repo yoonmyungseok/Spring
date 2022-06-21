@@ -1,0 +1,3 @@
+INFO : com.kh.spring.LoggingTest - 난 info야(2022-06-21 12:00:22)
+WARN : com.kh.spring.LoggingTest - 난 warn이야(2022-06-21 12:00:22)
+ERROR: com.kh.spring.LoggingTest - 난 error야(2022-06-21 12:00:22)
