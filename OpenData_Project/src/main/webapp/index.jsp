@@ -34,13 +34,43 @@
         <tbody></tbody>
     </table>
     <script>
+        /*
+            Javascript의 화살표 함수(람다식)
+            -Javascript 6버전부터 제공하는 가독성을 높여주는 문법
+            -기존의 익명함수를 표현할 때 쓴다.
+
+            [표현법]
+            -기존의 방식
+            function(){
+                실행할내용
+            }
+
+            -화살표함수를 이용한 방식
+            ()=>{
+                실행할내용
+            }
+
+            [사용 예시]
+            기존 표현법         |       화살표함수 표현법
+            ======================================================
+            function(){}        |       ()=>{}
+            ------------------------------------------------------
+            function(a){}       |       a=>{}
+            ------------------------------------------------------
+            function(a,b){}     |       (a,b)=>{}
+            ------------------------------------------------------
+            function(){         |       ()=>10
+                return 10;      |       
+            }                   |
+
+        */
         $(function() {
-            $("#btn1").click(function(){
+            $("#btn1").click(()=>{
                 //응답데이터를 XML 형식으로 돌려받은 경우
                 $.ajax({
                     url:"air.do",
                     data:{location:$("#location").val()},
-                    success:function(data){
+                    success:data => {
                         //console.log(data);
 
                         //=>xml도 마찬가지로 마크업 언어 (태그들로 이루어져 있음)
@@ -58,7 +88,7 @@
 
                         //2.반복문을 이용해서 실제 데이터가 담긴 요소들에 접근해서 동적으로 요소 만들기
                         //=>반복문 역할을 해주는 each (jQuery 제공 메소드) 메소드 활용
-                        itemArr.each(function(index, item){
+                        itemArr.each((index, item)=>{
                             //console.log(item);
                             //console.log($(item).find("stationName")); //
                             //console.log($(item).find("stationName").text()); //시작태그와 종료태그 사이의 문구만 추출
@@ -76,7 +106,7 @@
                         //3.동적으로 만들어낸 요소를 화면에 출력
                         $("#result1>tbody").html(value);
                     },
-                    error:function(){
+                    error:()=>{
                         console.log('ajax로 대기오염정보 불러오기 실패');
                     }
                 })
