@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>OpenData_Project</name>
+	<name>ttt</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -37,7 +37,6 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
 		<nature>org.springframework.ide.eclipse.core.springnature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
@@ -47,7 +46,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1656036187948</id>
+			<id>1656897792342</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
